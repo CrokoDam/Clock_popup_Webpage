@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Hide overflow to prevent scrollbars */
+            background: linear-gradient(45deg, #222 25%, #333 25%, #333 75%, #222 75%, #222), 
+                        linear-gradient(-45deg, #222 25%, #333 25%, #333 75%, #222 75%, #222); /* Add animated squares */
+            background-size: 50px 50px;
+            animation: squares 20s linear infinite; /* Animate the squares */
+            transition: background 0.5s ease; /* Add a smooth transition effect for background color */
+        }
+
+        @keyframes squares {
+            0% { background-position: 0 0; }
+            25% { background-position: 50px 50px; }
+            50% { background-position: 0 0; }
+            75% { background-position: 50px 50px; }
+            100% { background-position: 0 0; }
+        }
+
+        #popup {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+        }
+
+        .clock-box {
+            padding: 20px;
+            background-color: #333; /* Set the initial background color to dark grey */
+            color: #fff; /* Set text color to white */
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            margin: 10px;
+            flex: 1;
+        }
+
+        .clock-box p {
+            margin: 5px;
+        }
+
+        /* Add an animation for the popup */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Add an animation for sliding in the popup */
+        @keyframes slideIn {
+            from { transform: translate(0, 0); }
+            to { transform: translate(0, 0); }
+        }
+
+        /* Add an animation for sliding out the popup */
+        @keyframes slideOut {
+            from { transform: translate(0, 0); }
+            to { transform: translate(0, 100%); }
+        }
+    </style>
+    <script>
+        function showPopup() {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'flex';
+            popup.style.animation = 'fadeIn 1s ease, slideIn 1s ease';
+            updateTime();
+        }
+
+        function hidePopup() {
+            var popup = document.getElementById('popup');
+            popup.style.animation = 'fadeOut 1s ease, slideOut 1s ease'; // Apply slideOut animation
+            setTimeout(function () {
+                popup.style.display = 'none';
+            }, 500); // Hide the popup after the animation duration
+        }
+
+        function updateTime() {
+            var pacificTime = new Date().toLocaleString('en-US', {timeZone: 'America/Los_Angeles'});
+            var easternTime = new Date().toLocaleString('en-US', {timeZone: 'America/New_York'});
+            var centralTime = new Date().toLocaleString('en-US', {timeZone: 'America/Chicago'});
+            var mountainTime = new Date().toLocaleString('en-US', {timeZone: 'America/Denver'});
+
+            document.getElementById('pacific').innerHTML = `<p>Pacific Time</p><p>${pacificTime}</p>`;
+            document.getElementById('eastern').innerHTML = `<p>Eastern Time</p><p>${easternTime}</p>`;
+            document.getElementById('central').innerHTML = `<p>Central Time</p><p>${centralTime}</p>`;
+            document.getElementById('mountain').innerHTML = `<p>Mountain Time</p><p>${mountainTime}</p>`;
+
+            setTimeout(updateTime, 1000); // Update every second
+        }
+    </script>
+</head>
+<body>
+
+<button onclick="showPopup()">Show Time</button>
+
+<div id="popup">
+    <div class="clock-box" id="pacific"></div>
+    <div class="clock-box" id="eastern"></div>
+    <div class="clock-box" id="central"></div>
+    <div class="clock-box" id="mountain"></div>
+    <button onclick="hidePopup()">Close</button>
+</div>
+
+</body>
+</html>
